@@ -3,74 +3,27 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6-browsers
-        environment:
-          DISPLAY: ':99.0'
-          FLASK_CONFIG: testing
-          FLASK_ENV: development
-          FLASK_APP: app
-          AUTHLIB_INSECURE_TRANSPORT: true
-          DATABASE_URL: sqlite://
-          OAUTHLIB_INSECURE_TRANSPORT: true
-          JWT_PUBLIC_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyUZAE5lw05BMCU6XqRU9ZUfUJnN2zLQj7L5XRJy7mk9mNsfIrsYUJLa8zLev+O9pZIaFocUgk5gbzcYUxeM5OmRyQtxxnMzft/2qGvdjnM8X/hAlEze8xQMKrhtu5cqTSV0u9AApb51UESpDl0F0tpL0jZNDpuib75H1ieG6tESjGKhK8Luk6qHqjA59lJQhR0kl9JR7Fm/mq/ZC/acgCooihbJyCFgiHcq8FIpkQGrJN/U51jlZLHcea9zk72qr1cc2A/lGUzNz4SVEBD7IChqO2B7eV6DaCz0vDh2u1cCppBNF0oOSMjan1k4aglJ3LTCBCbfkAYOek3BkQ9NJR mirai@teko"
-          FACEBOOK_CLIENT_ID: 400309384131915
-          FACEBOOK_CLIENT_SECRET: af0feb880756dabd46c8504bfaa8d4c5
-          FACEBOOK_REDIRECT_URI: http://localhost:5000/oauth/facebook-callback
-          GOOGLE_CLIENT_ID: 617942122008-09p80iqquja3pgjm0q61qd7o4rsj2j1a.apps.googleusercontent.com
-          GOOGLE_CLIENT_SECRET: YYi8-8m1md7xuFw1Cr1pYpw4
-          GOOGLE_REDIRECT_URI: http://localhost:5000/oauth/google-callback
-          JWT_PRIVATE_KEY: '-----BEGIN RSA PRIVATE KEY-----
-MIIEowIBAAKCAQEAslGQBOZcNOQTAlOl6kVPWVH1CZzdsy0I+y+V0Scu5pPZjbHy
-K7GFCS2vMy3r/jvaWSGhaHFIJOYG83GFMXjOTpkckLccZzM37f9qhr3Y5zPF/4QJ
-RM3vMUDCq4bbuXKk0ldLvQAKW+dVBEqQ5dBdLaS9I2TQ6bom++R9YnhurREoxioS
-vC7pOqh6owOfZSUIUdJJfSUexZv5qv2Qv2nIAqKIoWycghYIh3KvBSKZEBqyTf1O
-dY5WSx3Hmvc5O9qq9XHNgP5RlMzc+ElRAQ+yAoajtge3leg2gs9Lw4drtXAqaQTR
-dKDkjI2p9ZOGoJSdy0wgQm35AGDnpNwZEPTSUQIDAQABAoIBAB4pN4/smtoDXce9
-+ElI0eQMvcKTethMnMFHyjJnS0KK7XhPCeQkEZl81a51bP5Ch2seChwNVSOQmMpi
-gCHfCh43PaKopjA6dJJX6l/CCscIdcwDPEIcBwIwrvyuQcn7Py+ovlHIiPgEh9fC
-+QE2HhyTSb6L1d5Cs0dV3XNjZWz2OnyRuCQ8dKpUQAcyS1xTeDUMvUKtrgkZ2HuQ
-g1IB48TKtc2mqEdvlkKEWm+zK2pk79h6axUhqaPeEChFsaDDiIJc/GmhVyL+uH3I
-6dXgF91qZHq3lROzA+FcaWjZWjW77uUoFrRLKC4bfdO5BucwnKvuf2sKPiut3Hq6
-mdjU00ECgYEA6XOWVdujguBwvvaXNqJhK2cs2RhlI+bSJ676ReyQcC5p+eg4TGzb
-jtbR8j36PNZz/Qr3cdXjLA6/+37MFCp7LbD2naAX9a7nXzf4Mi7JjKq7X35rQ8Ra
-IQPDf6eQWkLqZ7JJ/oSzFNClsvBHCsrs9OH44OECpUlIBUNeODu+uEkCgYEAw4q8
-1EXMkvm7Vs9/CI8PmY/LbATjEReOi//S0e+qcZwLauVZlq4RxGXD41Ixu95f31R5
-394Hbo88SXU/H6c6XtrQP5draRO962QjZwrDpWl6cF72XPjKQRbuLDLPk1nDG4hD
-tPmhul2eqkvsprFK6pohimbDCMDF4TxO3jx/GckCgYBulwkSpzewWi5O6HX9tbKe
-YwQF296dwUyw6903nrdVzUb60h1JZxAjfHR8cwvGIjlUGAvca1xwlJQxyYFX1EAC
-ByDszthK1I5atyLmcu+bqY2V0UdzFOM1XJkSMgjaGXT9pqIS5j4HkEfOmrCs1jCm
-WR4TOcSNFEf/5kgOD49rsQKBgDg2cgIz7pNx50EVdVdoiPuEMt5iqUQImZn1eQ2Q
-8FaonT+lnxOKBuGGv8Fhp5pyWu1Aw6hvk4Nc+d/ELNlUoZsTHDqrtN0IJ9i7eNHu
-bj/nCqOzKO+hNcNwbBeYo8OgUk5f5dbozG1e7HXYTbe9z+ORW4MF95tUj44oYCPT
-EFbBAoGBANZ/Lq6N0u7zMui/tfETmmsXQ9V5VbVqOLO3HSW83rtcTiaCDAv43n/V
-B7tR9mSgiglpbTalYkLjbgkZMEZvSI7X8RbT1+c3greiTFm4n8X9SgCZFRk0829U
-9I3RMBYlwTA0AlqRTcrgnFore3kPPu7KiJpm5UUXRJa1O6GLmhBU
------END RSA PRIVATE KEY-----'
-    - image: selenium/standalone-chrome:3
+      # - image: python:3.6
+      # - image: selenium/standalone-chrome:3
     steps:
       - checkout
-      - run: 
-        name: install xvfb
-        command: |
-          apt-get update
-          apt-get install -y firefox xvfb 
-      - run:
-        name: Start xvfb
-        command: |
-          sh -e /etc/init.d/xvfb start
-      - run:
-        name: check Chrome version
-        command: |
-          google-chrome --version
-      - run:
-        name: Download and Setup Chrome Driver
-        command: |
-          wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip -P ~/
-          unzip ~/chromedriver_linux64.zip -d ~/
-          rm ~/chromedriver_linux64.zip
-          sudo mv -f ~/chromedriver /usr/local/share/
-          sudo chmod +x /usr/local/share/chromedriver
-          sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
-          export CHROME_BIN=chromium-browser
+      # - run:
+      #   name: install xvfb
+      #   command: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y xvfb
+      # - run: sh -e /etc/init.d/xvfb start
+      - run: google-chrome --version
+      - run: |
+          chromedriver --version
+
+          # wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip -P ~/
+          # unzip ~/chromedriver_linux64.zip -d ~/
+          # rm ~/chromedriver_linux64.zip
+          # sudo mv -f ~/chromedriver /usr/local/share/
+          # sudo chmod +x /usr/local/share/chromedriver
+          # sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+          # export CHROME_BIN=chromium-browser
       - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
       - run:
@@ -78,40 +31,31 @@ B7tR9mSgiglpbTalYkLjbgkZMEZvSI7X8RbT1+c3greiTFm4n8X9SgCZFRk0829U
             python3 -m venv venv
             source venv/bin/activate
             pip install -r requirements/dev.txt
+      # - run: |
+      #     pip install -r requirements/dev.txt
+      #     sudo chmod -R 777 ~/venv
       - save_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
           paths:
             - "venv"
-      - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      - run:
-          - name: Run Test
-          command: |
-            source venv/bin/activate
-            ./cc-test-reporter before-build
-            pytest -v -ra --color=auto --tb=line -p no:warnings --submit-tests
-            coverage xml
-            # upload test report to Code Climate using `after-build`
-            ./cc-test-reporter after-build --exit-code $?
-          
-      
-      - 
-      # - store_artifacts:
-      #     path: test-reports/
-      #     destination: tr1
-      # - store_test_results:
-      #     path: test-reports/
-      # - add_ssh_keys:
-      #     fingerprints:
-      #       - "48:a0:87:54:ca:75:32:12:c6:9e:a2:77:a4:7a:08:a4"
-      # - deploy:
-      #     name: Deploy Master to Heroku
+      # - run:
+      #     name: Setup Code Climate test-reporter
       #     command: |
-      #       if [ "${CIRCLE_BRANCH}" == "master" ]; then
-      #         git push heroku master
-      #         heroku run python manage.py deploy
-      #         heroku restart
-      #       fi
+      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      #       chmod +x ./cc-test-reporter
+      # - run:
+      #     name: Run Test
+      #     command: |
+      #       source venv/bin/activate
+      #       ./cc-test-reporter before-build
+      #       pytest -v -ra --color=auto --tb=line -p no:warnings --submit-tests
+      #       coverage xml
+      #       # upload test report to Code Climate using `after-build`
+      #       ./cc-test-reporter after-build --exit-code $?
+      - run: pytest -v -ra --color=auto --tb=line -p no:warnings
+
+workflows:
+  version: 2
+  everything:
+    jobs:
+      - build
