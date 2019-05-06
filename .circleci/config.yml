@@ -15,17 +15,16 @@ jobs:
           command: |
             java -jar selenium-server-standalone-3.5.3.jar
           background: true
-      - restore_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+      # - restore_cache:
+      #     key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
       - run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install -r requirements/dev.txt --cache-dir=venv
-      - save_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
-          paths:
-            - ~/project/venv
-      - run: venv/bin/pytest tests/test_selenium.py
+          pip install --user -r requirements/dev.txt --cache-dir=venv
+          export PATH=$PATH:~/.local/bin
+      # - save_cache:
+      #     key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+      #     paths:
+      #       - ~/project/venv
+      - run: pytest tests/test_selenium.py
 
 workflows:
   version: 2
