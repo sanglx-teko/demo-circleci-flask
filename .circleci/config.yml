@@ -1,58 +1,31 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/project
     docker:
       - image: circleci/python:3.6-browsers
-      # - image: python:3.6
-      - image: selenium/standalone-chrome:3
     steps:
       - checkout
-      # - run:
-      #   name: install xvfb
-      #   command: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y xvfb
-      # - run: sh -e /etc/init.d/xvfb start
-      - run: google-chrome --version
-      - run: |
-          chromedriver --version
-
-          # wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip -P ~/
-          # unzip ~/chromedriver_linux64.zip -d ~/
-          # rm ~/chromedriver_linux64.zip
-          # sudo mv -f ~/chromedriver /usr/local/share/
-          # sudo chmod +x /usr/local/share/chromedriver
-          # sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
-          # export CHROME_BIN=chromium-browser
-      # - restore_cache:
-      #     key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
       - run:
+          name: Download Selenium
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements/dev.txt
-      # - run: |
-      #     pip install -r requirements/dev.txt
-      #     sudo chmod -R 777 ~/venv
+            curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
+      - run:
+          name: Start Selenium
+          command: |
+            java -jar selenium-server-standalone-3.5.3.jar
+          background: true
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+      - run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements/dev.txt --cache-dir=venv
       - save_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
           paths:
-            - "venv"
-      # - run:
-      #     name: Setup Code Climate test-reporter
-      #     command: |
-      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-      #       chmod +x ./cc-test-reporter
-      # - run:
-      #     name: Run Test
-      #     command: |
-      #       source venv/bin/activate
-      #       ./cc-test-reporter before-build
-      #       pytest -v -ra --color=auto --tb=line -p no:warnings --submit-tests
-      #       coverage xml
-      #       # upload test report to Code Climate using `after-build`
-      #       ./cc-test-reporter after-build --exit-code $?
-      - run: pytest -v -ra --color=auto --tb=line -p no:warnings
+            - ~/project/venv
+      - run: venv/bin/pytest tests/test_selenium.py
 
 workflows:
   version: 2

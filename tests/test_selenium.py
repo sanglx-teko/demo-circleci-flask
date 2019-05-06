@@ -20,7 +20,7 @@ class SeleniumTestCase(unittest.TestCase):
             chrome_options.add_argument('--headless')
             chrome_options.add_argument('--disable-gpu')
             chrome_options.add_argument('--lang=vi')
-            cls.client = webdriver.Chrome(service_args=["--verbose", "--log-path=test-reports/chrome.log"], chrome_options=chrome_options)
+            cls.client = webdriver.Chrome(chrome_options=chrome_options)
         except:
             pass
 
