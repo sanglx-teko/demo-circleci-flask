@@ -14,7 +14,13 @@ class SeleniumTestCase(unittest.TestCase):
     def setUpClass(cls):
         # start Chrome
         try:
-            cls.client = webdriver.Chrome(service_args=["--verbose", "--log-path=test-reports/chrome.log"])
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument('--no-sandbox')
+            chrome_options.add_argument('--window-size=1420,1080')
+            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--disable-gpu')
+            chrome_options.add_argument('--lang=vi')
+            cls.client = webdriver.Chrome(service_args=["--verbose", "--log-path=test-reports/chrome.log"], chrome_options=chrome_options)
         except:
             pass
 

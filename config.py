@@ -17,7 +17,8 @@ class Config:
     CIRCULATE_MAIL_SUBJECT_PREFIX = '[Circulate]'
     CIRCULATE_MAIL_SENDER = os.environ.get('CIRCULATE_MAIL_SENDER') or \
         'Circulate Admin <circulate@example.com>'
-    CIRCULATE_ADMIN = os.environ.get('CIRCULATE_ADMIN') or 'circulate@example.com'
+    CIRCULATE_ADMIN = os.environ.get(
+        'CIRCULATE_ADMIN') or 'circulate@example.com'
     CIRCULATE_POSTS_PER_PAGE = 20
     CIRCULATE_FOLLOWERS_PER_PAGE = 50
     CIRCULATE_COMMENTS_PER_PAGE = 30
@@ -37,7 +38,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-        'postgresql://localhost/circulate'
+        'sqlite://'
     WTF_CSRF_ENABLED = False
 
 
@@ -102,11 +103,10 @@ class UnixConfig(ProductionConfig):
 
 
 config = {
-    'development': DevelopmentConfig,
+    'develop': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
     'heroku': HerokuConfig,
     'unix': UnixConfig,
-
     'default': DevelopmentConfig
 }

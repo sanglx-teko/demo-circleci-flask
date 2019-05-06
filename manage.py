@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager, Shell
+from app.models import User, Follow, Role, Permission, Post, Comment
+from app import create_app, db
 import os
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
@@ -13,10 +17,6 @@ if os.path.exists('.env'):
         if len(var) == 2:
             os.environ[var[0]] = var[1]
 
-from app import create_app, db
-from app.models import User, Follow, Role, Permission, Post, Comment
-from flask_script import Manager, Shell
-from flask_migrate import Migrate, MigrateCommand
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 manager = Manager(app)
@@ -26,6 +26,8 @@ migrate = Migrate(app, db)
 def make_shell_context():
     return dict(app=app, db=db, User=User, Follow=Follow, Role=Role,
                 Permission=Permission, Post=Post, Comment=Comment)
+
+
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
@@ -41,7 +43,8 @@ def test(coverage=False):
     import xmlrunner
     tests = unittest.TestLoader().discover('tests')
     # run tests with unittest-xml-reporting and output to $CIRCLE_TEST_REPORTS on CircleCI or test-reports locally
-    xmlrunner.XMLTestRunner(output=os.environ.get('CIRCLE_TEST_REPORTS','test-reports')).run(tests)
+    xmlrunner.XMLTestRunner(output=os.environ.get(
+        'CIRCLE_TEST_REPORTS', 'test-reports')).run(tests)
     if COV:
         COV.stop()
         COV.save()
