@@ -15,19 +15,61 @@ jobs:
           command: |
             java -jar selenium-server-standalone-3.5.3.jar
           background: true
-      # - restore_cache:
-      #     key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
       - run: |
           pip install --user -r requirements/dev.txt --cache-dir=venv
-          export PATH=$PATH:~/.local/bin
-      # - save_cache:
-      #     key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
-      #     paths:
-      #       - ~/project/venv
-      - run: pytest tests/test_selenium.py
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+          paths: venv
+
+      - run:
+          name: Run test and submit to Code Climate
+          command: |
+            export PATH=$PATH:~/.local/bin
+            # curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            # chmod +x ./cc-test-reporter
+            # ./cc-test-reporter before-build
+            pytest tests/test_selenium.py
+            # ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  build2:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.6-browsers
+    steps:
+      - checkout
+      - run:
+          name: Download Selenium
+          command: |
+            curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
+      - run:
+          name: Start Selenium
+          command: |
+            java -jar selenium-server-standalone-3.5.3.jar
+          background: true
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+      - run: |
+          pip install --user -r requirements/dev.txt --cache-dir=venv
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+          paths: venv
+
+      - run:
+          name: Run test and submit to Code Climate
+          command: |
+            export PATH=$PATH:~/.local/bin
+            # curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            # chmod +x ./cc-test-reporter
+            # ./cc-test-reporter before-build
+            pytest tests/test_selenium.py
+            # ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 workflows:
   version: 2
   everything:
     jobs:
       - build
+      - build2: # <<< A job that will require manual approval in the CircleCI web application.
+          requires: # We only run the "hold" job when test2 has succeeded
+            - build
